@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A compact dashboard for discovering useful local events." />
+    <title>Local Lens Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#events">Local Lens</a>
+      <p>Useful things happening around Singapore</p>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="dashboard-title">
+        <div>
+          <p class="eyebrow">Community dashboard</p>
+          <h1 id="dashboard-title">Make room for something local.</h1>
+          <p class="hero-copy">A focused view of workshops, markets, meetups, and neighbourhood activities worth planning for.</p>
+        </div>
+        <time class="today" id="today" aria-label="Today's date"></time>
+      </section>
+
+      <section class="metrics" aria-label="Event overview">
+        <article class="metric-card">
+          <span>Upcoming events</span>
+          <strong id="event-count">0</strong>
+        </article>
+        <article class="metric-card">
+          <span>Total ticket cost</span>
+          <strong id="ticket-total">$0</strong>
+        </article>
+        <article class="metric-card">
+          <span>Categories</span>
+          <strong id="category-count">0</strong>
+        </article>
+      </section>
+
+      <section class="events-section" id="events" aria-labelledby="events-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Coming up</p>
+            <h2 id="events-title">Your local shortlist</h2>
+          </div>
+          <p id="event-summary" aria-live="polite"></p>
+        </div>
+        <div class="event-grid" id="event-grid"></div>
+      </section>
+    </main>
+
+    <footer>Built for quick plans, not endless scrolling.</footer>
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>
+
