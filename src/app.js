@@ -1,5 +1,11 @@
 import { events } from "./data.js";
 import { formatEventDate, formatMoney, sortEvents, summarizeEvents } from "./dashboard.js";
+import {
+  calculateTicketBudget,
+  loadTicketBudget,
+  parseTicketBudget,
+  saveTicketBudget
+} from "./features/ticket-budget.js";
 
 const eventGrid = document.querySelector("#event-grid");
 const eventCount = document.querySelector("#event-count");
@@ -7,6 +13,10 @@ const ticketTotal = document.querySelector("#ticket-total");
 const categoryCount = document.querySelector("#category-count");
 const eventSummary = document.querySelector("#event-summary");
 const today = document.querySelector("#today");
+const ticketBudgetInput = document.querySelector("#ticket-budget");
+const budgetResult = document.querySelector("#budget-result");
+const budgetTrack = document.querySelector("#budget-track");
+const budgetFill = document.querySelector("#budget-fill");
 
 function appendTextElement(parent, tagName, className, text) {
   const element = document.createElement(tagName);
@@ -48,6 +58,27 @@ function renderDashboard(items) {
   eventGrid.replaceChildren(...sortedEvents.map(createEventCard));
 }
 
+function renderTicketBudget(value) {
+  const summary = calculateTicketBudget(events, value);
+  const differenceCopy = summary.withinBudget
+    ? `${formatMoney(summary.difference)} remaining`
+    : `${formatMoney(Math.abs(summary.difference))} over budget`;
+
+  budgetResult.textContent = `${formatMoney(summary.ticketTotal)} for all events · ${differenceCopy}`;
+  budgetFill.style.width = `${summary.percentage}%`;
+  budgetTrack.dataset.overBudget = String(!summary.withinBudget);
+  budgetTrack.setAttribute("aria-valuemax", String(Math.max(summary.budget, summary.ticketTotal, 1)));
+  budgetTrack.setAttribute("aria-valuenow", String(summary.ticketTotal));
+  budgetTrack.setAttribute("aria-valuetext", `${formatMoney(summary.ticketTotal)} of ${formatMoney(summary.budget)}`);
+}
+
+ticketBudgetInput.value = String(loadTicketBudget(localStorage));
+ticketBudgetInput.addEventListener("input", () => {
+  const budget = parseTicketBudget(ticketBudgetInput.value);
+  saveTicketBudget(localStorage, budget);
+  renderTicketBudget(budget);
+});
+
 today.dateTime = new Date().toISOString().slice(0, 10);
 today.textContent = new Intl.DateTimeFormat("en-SG", {
   day: "numeric",
@@ -56,4 +87,5 @@ today.textContent = new Intl.DateTimeFormat("en-SG", {
 }).format(new Date());
 
 renderDashboard(events);
+renderTicketBudget(parseTicketBudget(ticketBudgetInput.value));
 
