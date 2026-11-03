@@ -138,6 +138,80 @@ h2 {
   font-size: clamp(1.6rem, 4vw, 2.35rem);
 }
 
+.budget-planner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.55fr) minmax(12rem, 0.7fr);
+  gap: 1.5rem;
+  align-items: end;
+  margin-top: 1rem;
+  padding: 1.4rem;
+  color: white;
+  background: var(--green);
+}
+
+.budget-planner h2 {
+  margin-bottom: 0.35rem;
+}
+
+.budget-planner .eyebrow,
+.budget-planner p {
+  color: #d7e9dc;
+}
+
+.budget-planner p {
+  margin-bottom: 0;
+}
+
+.budget-control {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.budget-control label {
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.budget-control input {
+  width: 100%;
+  padding: 0.7rem 0.75rem;
+  border: 2px solid transparent;
+  border-radius: 0;
+  color: var(--ink);
+  background: var(--surface);
+  font: inherit;
+  font-weight: 800;
+}
+
+.budget-control input:focus-visible {
+  border-color: var(--accent);
+  outline: 3px solid white;
+  outline-offset: 2px;
+}
+
+.budget-result {
+  align-self: center;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.budget-track {
+  grid-column: 1 / -1;
+  height: 0.6rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.budget-fill {
+  height: 100%;
+  background: #f4cf63;
+  transition: width 180ms ease;
+}
+
+.budget-track[data-over-budget="true"] .budget-fill {
+  background: #ff8a70;
+}
+
 .events-section {
   padding: 4.5rem 0 3rem;
 }
@@ -244,6 +318,14 @@ footer {
   .metrics,
   .event-grid {
     grid-template-columns: 1fr;
+  }
+
+  .budget-planner {
+    grid-template-columns: 1fr;
+  }
+
+  .budget-track {
+    grid-column: auto;
   }
 
   .section-heading {

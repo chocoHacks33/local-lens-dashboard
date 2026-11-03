@@ -38,6 +38,22 @@
         </article>
       </section>
 
+      <section class="budget-planner" aria-labelledby="budget-title">
+        <div>
+          <p class="eyebrow">Plan the month</p>
+          <h2 id="budget-title">Ticket budget</h2>
+          <p>Compare the full shortlist with the amount you want to spend.</p>
+        </div>
+        <div class="budget-control">
+          <label for="ticket-budget">Monthly event budget (SGD)</label>
+          <input id="ticket-budget" type="number" min="0" step="1" inputmode="decimal" />
+        </div>
+        <div class="budget-result" id="budget-result" aria-live="polite"></div>
+        <div class="budget-track" id="budget-track" role="progressbar" aria-label="Ticket budget used" aria-valuemin="0">
+          <div class="budget-fill" id="budget-fill"></div>
+        </div>
+      </section>
+
       <section class="events-section" id="events" aria-labelledby="events-title">
         <div class="section-heading">
           <div>
