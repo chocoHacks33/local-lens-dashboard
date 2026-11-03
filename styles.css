@@ -212,13 +212,41 @@ h2 {
 
 .category {
   display: inline-flex;
-  margin-top: 0.85rem;
   padding: 0.3rem 0.55rem;
   border-radius: 999px;
   color: var(--accent-dark);
   background: #fbe0d8;
   font-size: 0.72rem;
   font-weight: 800;
+}
+
+.event-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.event-action {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  background: transparent;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.event-action:hover {
+  color: white;
+  background: var(--ink);
+}
+
+.event-action:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 
 footer {
