@@ -155,6 +155,35 @@ h2 {
   color: var(--muted);
 }
 
+.events-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.events-toolbar label {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.events-toolbar select {
+  min-width: 11rem;
+  padding: 0.65rem 2.2rem 0.65rem 0.75rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  color: var(--ink);
+  background: var(--surface);
+  font: inherit;
+}
+
+.events-toolbar select:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .event-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -248,6 +277,11 @@ footer {
 
   .section-heading {
     align-items: start;
+    flex-direction: column;
+  }
+
+  .events-toolbar {
+    align-items: stretch;
     flex-direction: column;
   }
 }
