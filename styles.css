@@ -112,7 +112,7 @@ h2 {
 
 .metrics {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -212,13 +212,44 @@ h2 {
 
 .category {
   display: inline-flex;
-  margin-top: 0.85rem;
   padding: 0.3rem 0.55rem;
   border-radius: 999px;
   color: var(--accent-dark);
   background: #fbe0d8;
   font-size: 0.72rem;
   font-weight: 800;
+}
+
+.event-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.save-event {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  background: transparent;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.save-event[aria-pressed="true"] {
+  color: white;
+  background: var(--green);
+}
+
+.save-event:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 
 footer {
@@ -249,6 +280,12 @@ footer {
   .section-heading {
     align-items: start;
     flex-direction: column;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 900px) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
