@@ -205,6 +205,45 @@ h2 {
   margin-bottom: 0;
 }
 
+.capacity-status {
+  margin-top: 1rem;
+}
+
+.capacity-copy {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.capacity-copy strong {
+  color: var(--green);
+}
+
+.capacity-status[data-level="limited"] .capacity-copy strong,
+.capacity-status[data-level="sold-out"] .capacity-copy strong {
+  color: var(--accent-dark);
+}
+
+.capacity-track {
+  height: 0.45rem;
+  overflow: hidden;
+  background: #e2e3db;
+}
+
+.capacity-fill {
+  height: 100%;
+  background: var(--green);
+}
+
+.capacity-status[data-level="limited"] .capacity-fill,
+.capacity-status[data-level="sold-out"] .capacity-fill {
+  background: var(--accent);
+}
+
 .event-card h3 {
   margin: 0 0 0.35rem;
   font-size: 1.15rem;
