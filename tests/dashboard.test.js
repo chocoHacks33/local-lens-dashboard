@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import { events } from "../src/data.js";
-import { formatMoney, sortEvents, summarizeEvents } from "../src/dashboard.js";
+import { countWeekendEvents, formatMoney, sortEvents, summarizeEvents } from "../src/dashboard.js";
 
 test("seed events have unique ids and valid capacity data", () => {
   assert.equal(new Set(events.map((event) => event.id)).size, events.length);
@@ -20,8 +20,15 @@ test("dashboard summary totals the complete event list", () => {
   assert.deepEqual(summarizeEvents(events), {
     count: 6,
     ticketTotal: 53,
-    categoryCount: 6
+    categoryCount: 6,
+    weekendCount: 3
   });
+});
+
+test("weekend insight uses Singapore calendar days", () => {
+  const fridayUtcButSaturdayLocal = [{ startsAt: "2026-11-06T20:00:00Z" }];
+
+  assert.equal(countWeekendEvents(fridayUtcButSaturdayLocal), 1);
 });
 
 test("events are sorted chronologically without mutating input", () => {

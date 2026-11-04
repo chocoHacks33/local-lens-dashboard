@@ -5,6 +5,7 @@ const eventGrid = document.querySelector("#event-grid");
 const eventCount = document.querySelector("#event-count");
 const ticketTotal = document.querySelector("#ticket-total");
 const categoryCount = document.querySelector("#category-count");
+const weekendCount = document.querySelector("#weekend-count");
 const eventSummary = document.querySelector("#event-summary");
 const today = document.querySelector("#today");
 
@@ -44,6 +45,7 @@ function renderDashboard(items) {
   eventCount.textContent = String(summary.count);
   ticketTotal.textContent = formatMoney(summary.ticketTotal);
   categoryCount.textContent = String(summary.categoryCount);
+  weekendCount.textContent = String(summary.weekendCount);
   eventSummary.textContent = `${summary.count} curated events`;
   eventGrid.replaceChildren(...sortedEvents.map(createEventCard));
 }
