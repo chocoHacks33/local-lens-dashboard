@@ -1,5 +1,6 @@
 import { events } from "./data.js";
 import { formatEventDate, formatMoney, sortEvents, summarizeEvents } from "./dashboard.js";
+import { filterFreeEvents } from "./features/free-entry-filter.js";
 
 const eventGrid = document.querySelector("#event-grid");
 const eventCount = document.querySelector("#event-count");
@@ -7,6 +8,7 @@ const ticketTotal = document.querySelector("#ticket-total");
 const categoryCount = document.querySelector("#category-count");
 const eventSummary = document.querySelector("#event-summary");
 const today = document.querySelector("#today");
+const freeEntryOnly = document.querySelector("#free-entry-only");
 
 function appendTextElement(parent, tagName, className, text) {
   const element = document.createElement(tagName);
@@ -56,4 +58,8 @@ today.textContent = new Intl.DateTimeFormat("en-SG", {
 }).format(new Date());
 
 renderDashboard(events);
+
+freeEntryOnly.addEventListener("change", () => {
+  renderDashboard(freeEntryOnly.checked ? filterFreeEvents(events) : events);
+});
 
