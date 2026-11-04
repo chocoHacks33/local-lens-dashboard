@@ -1,5 +1,6 @@
 import { events } from "./data.js";
 import { formatEventDate, formatMoney, sortEvents, summarizeEvents } from "./dashboard.js";
+import { searchEvents } from "./features/event-search.js";
 
 const eventGrid = document.querySelector("#event-grid");
 const eventCount = document.querySelector("#event-count");
@@ -7,6 +8,7 @@ const ticketTotal = document.querySelector("#ticket-total");
 const categoryCount = document.querySelector("#category-count");
 const eventSummary = document.querySelector("#event-summary");
 const today = document.querySelector("#today");
+const searchInput = document.querySelector("#event-search");
 
 function appendTextElement(parent, tagName, className, text) {
   const element = document.createElement(tagName);
@@ -44,8 +46,16 @@ function renderDashboard(items) {
   eventCount.textContent = String(summary.count);
   ticketTotal.textContent = formatMoney(summary.ticketTotal);
   categoryCount.textContent = String(summary.categoryCount);
-  eventSummary.textContent = `${summary.count} curated events`;
-  eventGrid.replaceChildren(...sortedEvents.map(createEventCard));
+  eventSummary.textContent = `${summary.count} matching ${summary.count === 1 ? "event" : "events"}`;
+
+  const cards = sortedEvents.map(createEventCard);
+  if (cards.length === 0) {
+    const emptyState = document.createElement("p");
+    emptyState.className = "empty-state";
+    emptyState.textContent = "No events match that search. Try a different title, category, or venue.";
+    cards.push(emptyState);
+  }
+  eventGrid.replaceChildren(...cards);
 }
 
 today.dateTime = new Date().toISOString().slice(0, 10);
@@ -56,4 +66,8 @@ today.textContent = new Intl.DateTimeFormat("en-SG", {
 }).format(new Date());
 
 renderDashboard(events);
+
+searchInput.addEventListener("input", () => {
+  renderDashboard(searchEvents(events, searchInput.value));
+});
 
