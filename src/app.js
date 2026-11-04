@@ -1,5 +1,6 @@
 import { events } from "./data.js";
 import { formatEventDate, formatMoney, sortEvents, summarizeEvents } from "./dashboard.js";
+import { buildVenueDirectionsUrl } from "./features/venue-directions.js";
 
 const eventGrid = document.querySelector("#event-grid");
 const eventCount = document.querySelector("#event-count");
@@ -31,7 +32,24 @@ function createEventCard(event) {
   appendTextElement(content, "h3", "", event.title);
   appendTextElement(content, "p", "event-meta", `${formatEventDate(event.startsAt)} · ${event.venue} · ${formatMoney(event.price)}`);
   appendTextElement(content, "p", "event-description", event.description);
-  appendTextElement(content, "span", "category", event.category);
+
+  const actions = document.createElement("div");
+  actions.className = "event-actions";
+  appendTextElement(actions, "span", "category", event.category);
+
+  const directionsUrl = buildVenueDirectionsUrl(event.venue);
+  if (directionsUrl) {
+    const directionsLink = document.createElement("a");
+    directionsLink.className = "venue-link";
+    directionsLink.href = directionsUrl;
+    directionsLink.target = "_blank";
+    directionsLink.rel = "noopener noreferrer";
+    directionsLink.textContent = "Get directions";
+    directionsLink.setAttribute("aria-label", `Get directions to ${event.venue} (opens in a new tab)`);
+    actions.append(directionsLink);
+  }
+
+  content.append(actions);
 
   article.append(dateBlock, content);
   return article;

@@ -210,15 +210,35 @@ h2 {
   font-size: 1.15rem;
 }
 
+.event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.85rem;
+}
+
 .category {
   display: inline-flex;
-  margin-top: 0.85rem;
   padding: 0.3rem 0.55rem;
   border-radius: 999px;
   color: var(--accent-dark);
   background: #fbe0d8;
   font-size: 0.72rem;
   font-weight: 800;
+}
+
+.venue-link {
+  color: var(--green);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-underline-offset: 0.2em;
+}
+
+.venue-link:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
 }
 
 footer {
