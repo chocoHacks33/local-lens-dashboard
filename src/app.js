@@ -1,5 +1,6 @@
 import { events } from "./data.js";
 import { formatEventDate, formatMoney, sortEvents, summarizeEvents } from "./dashboard.js";
+import { shareEvent } from "./features/event-sharing.js";
 
 const eventGrid = document.querySelector("#event-grid");
 const eventCount = document.querySelector("#event-count");
@@ -7,6 +8,7 @@ const ticketTotal = document.querySelector("#ticket-total");
 const categoryCount = document.querySelector("#category-count");
 const eventSummary = document.querySelector("#event-summary");
 const today = document.querySelector("#today");
+const shareStatus = document.querySelector("#share-status");
 
 function appendTextElement(parent, tagName, className, text) {
   const element = document.createElement(tagName);
@@ -19,6 +21,7 @@ function appendTextElement(parent, tagName, className, text) {
 function createEventCard(event) {
   const article = document.createElement("article");
   article.className = "event-card";
+  article.id = `event-${event.id}`;
 
   const calendarDate = new Date(event.startsAt);
   const dateBlock = document.createElement("time");
@@ -32,6 +35,22 @@ function createEventCard(event) {
   appendTextElement(content, "p", "event-meta", `${formatEventDate(event.startsAt)} · ${event.venue} · ${formatMoney(event.price)}`);
   appendTextElement(content, "p", "event-description", event.description);
   appendTextElement(content, "span", "category", event.category);
+  const shareButton = appendTextElement(content, "button", "share-button", "Share event");
+  shareButton.type = "button";
+  shareButton.addEventListener("click", async () => {
+    const result = await shareEvent(event, {
+      locationHref: window.location.href,
+      share: navigator.share?.bind(navigator),
+      writeText: navigator.clipboard?.writeText?.bind(navigator.clipboard)
+    });
+    const messages = {
+      shared: `${event.title} shared.`,
+      copied: `Link to ${event.title} copied.`,
+      cancelled: "Sharing cancelled.",
+      unavailable: "Sharing is not available in this browser."
+    };
+    shareStatus.textContent = messages[result];
+  });
 
   article.append(dateBlock, content);
   return article;
