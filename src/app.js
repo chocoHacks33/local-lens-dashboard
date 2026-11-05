@@ -1,5 +1,6 @@
 import { events } from "./data.js";
 import { formatEventDate, formatMoney, sortEvents, summarizeEvents } from "./dashboard.js";
+import { nextDensity, readDensity, writeDensity } from "./features/view-density.js";
 
 const eventGrid = document.querySelector("#event-grid");
 const eventCount = document.querySelector("#event-count");
@@ -7,6 +8,22 @@ const ticketTotal = document.querySelector("#ticket-total");
 const categoryCount = document.querySelector("#category-count");
 const eventSummary = document.querySelector("#event-summary");
 const today = document.querySelector("#today");
+const densityToggle = document.querySelector("#density-toggle");
+const preferenceStorage = (() => {
+  try {
+    return window.localStorage;
+  } catch {
+    return undefined;
+  }
+})();
+let density = readDensity(preferenceStorage);
+
+function applyDensity() {
+  const compact = density === "compact";
+  eventGrid.classList.toggle("event-grid--compact", compact);
+  densityToggle.setAttribute("aria-pressed", String(compact));
+  densityToggle.textContent = compact ? "Use comfortable view" : "Use compact view";
+}
 
 function appendTextElement(parent, tagName, className, text) {
   const element = document.createElement(tagName);
@@ -56,4 +73,11 @@ today.textContent = new Intl.DateTimeFormat("en-SG", {
 }).format(new Date());
 
 renderDashboard(events);
+applyDensity();
+
+densityToggle.addEventListener("click", () => {
+  density = nextDensity(density);
+  writeDensity(preferenceStorage, density);
+  applyDensity();
+});
 
