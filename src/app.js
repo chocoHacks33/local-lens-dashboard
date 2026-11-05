@@ -1,5 +1,11 @@
 import { events } from "./data.js";
-import { formatEventDate, formatMoney, sortEvents, summarizeEvents } from "./dashboard.js";
+import {
+  formatEventDate,
+  formatEventDuration,
+  formatMoney,
+  sortEvents,
+  summarizeEvents
+} from "./dashboard.js";
 
 const eventGrid = document.querySelector("#event-grid");
 const eventCount = document.querySelector("#event-count");
@@ -29,7 +35,12 @@ function createEventCard(event) {
 
   const content = document.createElement("div");
   appendTextElement(content, "h3", "", event.title);
-  appendTextElement(content, "p", "event-meta", `${formatEventDate(event.startsAt)} · ${event.venue} · ${formatMoney(event.price)}`);
+  appendTextElement(
+    content,
+    "p",
+    "event-meta",
+    `${formatEventDate(event.startsAt)} · ${formatEventDuration(event.startsAt, event.endsAt)} · ${event.venue} · ${formatMoney(event.price)}`
+  );
   appendTextElement(content, "p", "event-description", event.description);
   appendTextElement(content, "span", "category", event.category);
 
