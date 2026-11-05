@@ -1,5 +1,5 @@
 import { events } from "./data.js";
-import { formatEventDate, formatMoney, sortEvents, summarizeEvents } from "./dashboard.js";
+import { formatEventDate, formatMoney, sortEventsBy, summarizeEvents } from "./dashboard.js";
 
 const eventGrid = document.querySelector("#event-grid");
 const eventCount = document.querySelector("#event-count");
@@ -7,6 +7,7 @@ const ticketTotal = document.querySelector("#ticket-total");
 const categoryCount = document.querySelector("#category-count");
 const eventSummary = document.querySelector("#event-summary");
 const today = document.querySelector("#today");
+const eventSort = document.querySelector("#event-sort");
 
 function appendTextElement(parent, tagName, className, text) {
   const element = document.createElement(tagName);
@@ -38,7 +39,7 @@ function createEventCard(event) {
 }
 
 function renderDashboard(items) {
-  const sortedEvents = sortEvents(items);
+  const sortedEvents = sortEventsBy(items, eventSort.value);
   const summary = summarizeEvents(sortedEvents);
 
   eventCount.textContent = String(summary.count);
@@ -47,6 +48,8 @@ function renderDashboard(items) {
   eventSummary.textContent = `${summary.count} curated events`;
   eventGrid.replaceChildren(...sortedEvents.map(createEventCard));
 }
+
+eventSort.addEventListener("change", () => renderDashboard(events));
 
 today.dateTime = new Date().toISOString().slice(0, 10);
 today.textContent = new Intl.DateTimeFormat("en-SG", {

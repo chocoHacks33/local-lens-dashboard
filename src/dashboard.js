@@ -13,7 +13,18 @@ const dateFormatter = new Intl.DateTimeFormat("en-SG", {
 });
 
 export function sortEvents(items) {
-  return [...items].sort((left, right) => new Date(left.startsAt) - new Date(right.startsAt));
+  return sortEventsBy(items, "date");
+}
+
+export function sortEventsBy(items, criterion = "date") {
+  const compareDate = (left, right) => new Date(left.startsAt) - new Date(right.startsAt);
+  const comparators = {
+    date: compareDate,
+    price: (left, right) => left.price - right.price || compareDate(left, right),
+    title: (left, right) => left.title.localeCompare(right.title, "en-SG") || compareDate(left, right)
+  };
+
+  return [...items].sort(comparators[criterion] ?? comparators.date);
 }
 
 export function summarizeEvents(items) {

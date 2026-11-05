@@ -44,7 +44,15 @@
             <p class="eyebrow">Coming up</p>
             <h2 id="events-title">Your local shortlist</h2>
           </div>
-          <p id="event-summary" aria-live="polite"></p>
+          <div class="event-controls">
+            <label for="event-sort">Sort events</label>
+            <select id="event-sort">
+              <option value="date">Soonest first</option>
+              <option value="price">Lowest price</option>
+              <option value="title">Title A–Z</option>
+            </select>
+            <p id="event-summary" aria-live="polite"></p>
+          </div>
         </div>
         <div class="event-grid" id="event-grid"></div>
       </section>
