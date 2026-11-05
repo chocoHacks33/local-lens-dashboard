@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import { events } from "../src/data.js";
-import { formatMoney, sortEvents, summarizeEvents } from "../src/dashboard.js";
+import { formatEventDuration, formatMoney, sortEvents, summarizeEvents } from "../src/dashboard.js";
 
 test("seed events have unique ids and valid capacity data", () => {
   assert.equal(new Set(events.map((event) => event.id)).size, events.length);
@@ -11,6 +11,8 @@ test("seed events have unique ids and valid capacity data", () => {
     assert.ok(event.title);
     assert.ok(event.category);
     assert.ok(!Number.isNaN(new Date(event.startsAt).valueOf()));
+    assert.ok(!Number.isNaN(new Date(event.endsAt).valueOf()));
+    assert.ok(new Date(event.endsAt) > new Date(event.startsAt));
     assert.ok(event.price >= 0);
     assert.ok(event.attending >= 0 && event.attending <= event.capacity);
   }
@@ -34,5 +36,16 @@ test("events are sorted chronologically without mutating input", () => {
 
 test("money formatting uses Singapore dollars", () => {
   assert.match(formatMoney(28), /\$28/);
+});
+
+test("event durations use compact hour and minute labels", () => {
+  assert.equal(formatEventDuration("2026-11-19T18:45:00+08:00", "2026-11-19T21:00:00+08:00"), "2 hrs 15 min");
+  assert.equal(formatEventDuration("2026-11-19T18:45:00+08:00", "2026-11-19T19:45:00+08:00"), "1 hr");
+  assert.equal(formatEventDuration("2026-11-19T18:45:00+08:00", "2026-11-19T19:15:00+08:00"), "30 min");
+});
+
+test("invalid or non-positive event ranges have a safe fallback", () => {
+  assert.equal(formatEventDuration("bad-date", "also-bad"), "Duration unavailable");
+  assert.equal(formatEventDuration("2026-11-19T19:00:00+08:00", "2026-11-19T18:00:00+08:00"), "Duration unavailable");
 });
 
