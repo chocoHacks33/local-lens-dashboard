@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import { events } from "../src/data.js";
-import { formatMoney, sortEvents, summarizeEvents } from "../src/dashboard.js";
+import { formatMoney, sortEvents, summarizeEvents, summarizeMonthlySpend } from "../src/dashboard.js";
 
 test("seed events have unique ids and valid capacity data", () => {
   assert.equal(new Set(events.map((event) => event.id)).size, events.length);
@@ -34,5 +34,28 @@ test("events are sorted chronologically without mutating input", () => {
 
 test("money formatting uses Singapore dollars", () => {
   assert.match(formatMoney(28), /\$28/);
+});
+
+test("monthly spend groups event counts and ticket totals chronologically", () => {
+  assert.deepEqual(summarizeMonthlySpend(events), [
+    {
+      key: "2026-11",
+      label: "November 2026",
+      total: 48,
+      eventCount: 5
+    },
+    {
+      key: "2026-12",
+      label: "December 2026",
+      total: 5,
+      eventCount: 1
+    }
+  ]);
+});
+
+test("monthly spend does not mutate the supplied events", () => {
+  const input = [events[5], events[0]];
+  summarizeMonthlySpend(input);
+  assert.deepEqual(input.map((event) => event.id), [events[5].id, events[0].id]);
 });
 

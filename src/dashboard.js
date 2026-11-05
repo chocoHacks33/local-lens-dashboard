@@ -24,6 +24,26 @@ export function summarizeEvents(items) {
   };
 }
 
+export function summarizeMonthlySpend(items) {
+  const months = new Map();
+
+  for (const event of items) {
+    const date = new Date(event.startsAt);
+    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    const current = months.get(key) ?? {
+      key,
+      label: date.toLocaleDateString("en-SG", { month: "long", year: "numeric" }),
+      total: 0,
+      eventCount: 0
+    };
+    current.total += event.price;
+    current.eventCount += 1;
+    months.set(key, current);
+  }
+
+  return [...months.values()].sort((left, right) => left.key.localeCompare(right.key));
+}
+
 export function formatMoney(amount) {
   return currencyFormatter.format(amount);
 }

@@ -1,5 +1,11 @@
 import { events } from "./data.js";
-import { formatEventDate, formatMoney, sortEvents, summarizeEvents } from "./dashboard.js";
+import {
+  formatEventDate,
+  formatMoney,
+  sortEvents,
+  summarizeEvents,
+  summarizeMonthlySpend
+} from "./dashboard.js";
 
 const eventGrid = document.querySelector("#event-grid");
 const eventCount = document.querySelector("#event-count");
@@ -7,6 +13,7 @@ const ticketTotal = document.querySelector("#ticket-total");
 const categoryCount = document.querySelector("#category-count");
 const eventSummary = document.querySelector("#event-summary");
 const today = document.querySelector("#today");
+const monthlySpendList = document.querySelector("#monthly-spend-list");
 
 function appendTextElement(parent, tagName, className, text) {
   const element = document.createElement(tagName);
@@ -46,6 +53,15 @@ function renderDashboard(items) {
   categoryCount.textContent = String(summary.categoryCount);
   eventSummary.textContent = `${summary.count} curated events`;
   eventGrid.replaceChildren(...sortedEvents.map(createEventCard));
+  monthlySpendList.replaceChildren(
+    ...summarizeMonthlySpend(sortedEvents).map((month) => {
+      const card = document.createElement("article");
+      appendTextElement(card, "span", "", month.label);
+      appendTextElement(card, "strong", "", formatMoney(month.total));
+      appendTextElement(card, "small", "", `${month.eventCount} ${month.eventCount === 1 ? "event" : "events"}`);
+      return card;
+    })
+  );
 }
 
 today.dateTime = new Date().toISOString().slice(0, 10);
